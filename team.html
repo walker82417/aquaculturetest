@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team - Aquaculture Monitoring System</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Video Background */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+        #ocean-video {
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 119, 182, 0.8);
+            padding: 10px 20px;
+            border-radius: 12px;
+            z-index: 10;
+        }
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+            gap: 20px;
+        }
+        .navbar li {
+            display: inline;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #00b4d8;
+        }
+
+        /* Main Content */
+        .content {
+            text-align: center;
+            margin-top: 100px;
+            color: white;
+        }
+        .content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        /* Team Section */
+        .team-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .team-member {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .team-member img {
+            width: 100%;
+            height: 250px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+        .team-member h3 {
+            margin-top: 10px;
+            font-size: 1.5rem;
+            color: white;
+        }
+        .team-member p {
+            color: #ccc;
+            margin-top: 5px;
+            font-size: 1rem;
+        }
+        .team-member:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        /* AI Icon */
+        .ai-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            z-index: 20;
+        }
+        .ai-icon img {
+            width: 50px;
+            height: 50px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .ai-icon:hover img {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Video -->
+    <div class="video-container">
+        <video autoplay muted loop id="ocean-video">
+            <source src="fish.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="control-devie.html">Control Device</a></li>
+            <li><a href="data.html">Data</a></li>
+            <li><a href="team.html">Team</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1>Meet Our Team</h1>
+        <div class="team-container">
+            <!-- Team Member 1 -->
+            <div class="team-member">
+                <img src="sushmita.jpg" alt="Sushmita Sarkar">
+                <h3>Sushmita Sarkar</h3>
+                <p>PBL co-ordinator </p>
+            </div>
+            <!-- Team Member 1 -->
+            <div class="team-member">
+                <img src="my pic.jpg" alt="Rohan">
+                <h3>Rohan</h3>
+                <p>Project Lead & Software Developer</p>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="team-member">
+                <img src="vivek.jpg" alt="Vivek">
+                <h3>Vivek</h3>
+                <p>Hardware Specialist</p>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="team-member">
+                <img src="sanket.jpg" alt="Sanket">
+                <h3>Sanket</h3>
+                <p>Hardware Specialist</p>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="team-member">
+                <img src="harshprabha.jpg" alt="Harshprabha">
+                <h3>Harshprabha</h3>
+                <p>Software Designer</p>
+            </div>
+
+            <!-- Team Member 5 -->
+            <div class="team-member">
+                <img src="harshada.jpg" alt="Harshada">
+                <h3>Harshada</h3>
+                <p> Designer</p>
+            </div>
+
+            <!-- Team Member 6 -->
+            <div class="team-member">
+                <img src="vaishnavi.jpg" alt="Vaishnavi">
+                <h3>Vaishnavi</h3>
+                <p> Designer </p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="ai-icon" onclick="activateAI()">
+        <img src="ai-icon.png" alt="AI Icon">
+    </div>
+
+    <script>
+        function activateAI() {
+            alert('AI Assistant Activated! How can I help you?');
+        }
+    </script>
+</body>
+</html>

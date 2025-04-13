@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data - Aquaculture Monitoring System</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Video Background */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        #ocean-video {
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 119, 182, 0.8);
+            padding: 10px 20px;
+            border-radius: 12px;
+            z-index: 10;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar li {
+            display: inline;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #00b4d8;
+        }
+
+        /* Main Content */
+        .content {
+            margin-top: 80px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+        }
+
+        /* Search Bar */
+        .search-container {
+            margin: 20px auto;
+            width: 60%;
+        }
+
+        #search {
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 2px solid #00b4d8;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    background-image: url('search-icon.png');
+    background-position: 10px center;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+}
+#search:focus {
+    border-color: #0077B6;
+    box-shadow: 0 0 12px rgba(0, 180, 216, 0.7);
+}
+
+        /* Data Table */
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: center;
+            color: white;
+        }
+
+        th {
+            background-color: rgba(0, 119, 182, 0.9);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        tr:hover {
+            background-color: rgba(0, 180, 216, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background Video -->
+    <div class="video-container">
+        <video autoplay muted loop id="ocean-video">
+            <source src="fish.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="control-devie.html">Control Device</a></li>
+            <li><a href="data.html">Data</a></li>
+            <li><a href="team.html">Team</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1>Recorded Data</h1>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="search" onkeyup="filterData()" placeholder="Search by parameter or value...">
+        </div>
+
+        <!-- Table Container -->
+        <div class="table-container">
+            <table id="data-table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>pH Level</th>
+                        <th>Temperature</th>
+                        <th>Turbidity</th>
+                        <th>Water Flow Rate</th>
+                        <th>Water Level (%)</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- Data will be inserted dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>WALKER82417</p>
+    </footer>
+
+    <!-- JavaScript to Handle Data Storage -->
+    <script>
+        let data = [];
+
+        // Load Data from localStorage
+        function loadStoredData() {
+            const storedData = JSON.parse(localStorage.getItem('parameterData'));
+            if (storedData && storedData.data) {
+                data = storedData.data;
+                console.log('Data loaded from localStorage.');
+            } else {
+                console.log('No valid data found. Using sample data.');
+                populateSampleData();
+            }
+            populateTable();
+        }
+
+        // Store Data in localStorage
+        function storeData() {
+            localStorage.setItem('parameterData', JSON.stringify({ data }));
+        }
+
+        // Populate Sample Data
+        function populateSampleData() {
+            data = [
+                { time: new Date().toLocaleString(), ph: 7.2, temp: 28.1, turbidity: 3.5, flow: 3.2, waterLevel: 75 },
+                { time: new Date().toLocaleString(), ph: 6.9, temp: 27.5, turbidity: 3.2, flow: 3.1, waterLevel: 68 }
+            ];
+            storeData();
+        }
+
+        // Populate Data in Table
+        function populateTable() {
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = '';
+            
+            data.forEach(entry => {
+                const row = `
+                    <tr>
+                        <td>${entry.time}</td>
+                        <td>${entry.ph.toFixed(2)}</td>
+                        <td>${entry.temp.toFixed(1)}°C</td>
+                        <td>${entry.turbidity.toFixed(1)} NTU</td>
+                        <td>${entry.flow.toFixed(1)} L/min</td>
+                        <td>${entry.waterLevel.toFixed(1)}%</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        // Filter Table Data Based on User Input
+        function filterData() {
+            const searchValue = document.getElementById('search').value.toLowerCase();
+            const filteredData = data.filter(entry =>
+                Object.values(entry).some(val => val.toString().toLowerCase().includes(searchValue))
+            );
+
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = '';
+            
+            filteredData.forEach(entry => {
+                const row = `
+                    <tr>
+                        <td>${entry.time}</td>
+                        <td>${entry.ph.toFixed(2)}</td>
+                        <td>${entry.temp.toFixed(1)}°C</td>
+                        <td>${entry.turbidity.toFixed(1)} NTU</td>
+                        <td>${entry.flow.toFixed(1)} L/min</td>
+                        <td>${entry.waterLevel.toFixed(1)}%</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        // Auto-Update Table Data Every 5 Seconds
+        setInterval(() => {
+            const randomEntry = {
+                time: new Date().toLocaleString(),
+                ph: (6.8 + Math.random() * 0.5),
+                temp: (27 + Math.random() * 3),
+                turbidity: (3 + Math.random()),
+                flow: (3 + Math.random()),
+                waterLevel: (50 + Math.random() * 50)
+            };
+            data.unshift(randomEntry);
+            if (data.length > 10) {
+                data.pop();
+            }
+            populateTable();
+            storeData();
+        }, 5000);
+
+        // Load stored data and populate table initially
+        loadStoredData();
+    </script>
+</body>
+
+</html>
