@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: Arial, sans-serif;
             overflow-x: hidden;
@@ -26,6 +28,7 @@
             z-index: -1;
             overflow: hidden;
         }
+
         #ocean-video {
             width: 100%;
             height: 100vh;
@@ -33,25 +36,27 @@
         }
 
         .navbar {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(90deg, #0077B6, #00B4D8);
-    padding: 10px 20px;
-    border-radius: 12px;
-    z-index: 100;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, #0077B6, #00B4D8);
+            padding: 10px 20px;
+            border-radius: 12px;
+            z-index: 100;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
         .navbar ul {
             list-style-type: none;
             display: flex;
             gap: 20px;
         }
+
         .navbar li {
             display: inline;
         }
+
         .navbar a {
             color: white;
             text-decoration: none;
@@ -60,6 +65,7 @@
             border-radius: 8px;
             transition: background 0.3s;
         }
+
         .navbar a:hover {
             background-color: #00b4d8;
         }
@@ -73,10 +79,12 @@
             text-align: center;
             color: white;
         }
+
         .content h1 {
             font-size: 3rem;
             margin-bottom: 10px;
         }
+
         .content p {
             font-size: 1.2rem;
             margin-bottom: 20px;
@@ -100,16 +108,73 @@
             cursor: pointer;
             z-index: 20;
         }
+
         .ai-icon img {
             width: 50px;
             height: 50px;
             transition: transform 0.3s ease-in-out;
         }
+
         .ai-icon:hover img {
             transform: scale(1.1);
         }
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 30;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .modal-content {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            background-color: darkred;
+        }
+
+        /* AI Interaction Styling */
+        .ai-interaction {
+            margin-top: 20px;
+        }
+
+        .ai-interaction h2 {
+            margin-bottom: 15px;
+        }
+
+        .ai-interaction p {
+            font-size: 1.1rem;
+        }
     </style>
 </head>
+
 <body>
     <!-- Background Video -->
     <div class="video-container">
@@ -118,25 +183,24 @@
             Your browser does not support the video tag.
         </video>
     </div>
-<!-- Updated Navbar with Glider -->
-<div class="navbar">
-    <ul class="nav-list">
-        <li>
-            <a href="index.html" class="nav-link">Home</a>
-        </li>
-        <li>
-            <a href="control-device.html" class="nav-link">Control Device</a>
-        </li>
-        <li>
-            <a href="data.html" class="nav-link">Data</a>
-        </li>
-        <li>
-            <a href="team.html" class="nav-link">Team</a>
-        </li>
-        <div class="glider"></div>
-    </ul>
-</div>
 
+    <!-- Updated Navbar with Glider -->
+    <div class="navbar">
+        <ul class="nav-list">
+            <li>
+                <a href="index.html" class="nav-link">Home</a>
+            </li>
+            <li>
+                <a href="control-device.html" class="nav-link">Control Device</a>
+            </li>
+            <li>
+                <a href="data.html" class="nav-link">Data</a>
+            </li>
+            <li>
+                <a href="team.html" class="nav-link">Team</a>
+            </li>
+        </ul>
+    </div>
 
     <!-- Main Content -->
     <div class="content">
@@ -150,14 +214,31 @@
     </footer>
 
     <!-- AI Icon -->
-    <div class="ai-icon" onclick="activateAI()">
+    <div class="ai-icon" onclick="openAIUI()">
         <img src="ai-icon.png" alt="AI Icon">
     </div>
 
+    <!-- AI Modal -->
+    <div id="ai-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeAIUI()">X</button>
+            <h2>AI Interaction</h2>
+            <div class="ai-interaction">
+                <p>Welcome to the AI Assistant! How can I assist you with your aquaculture monitoring today?</p>
+                <p>Click below to get predictions or explore other features.</p>
+            </div>
+        </div>
+    </div>
+
     <script>
-        function activateAI() {
-            alert('AI Assistant Activated! How can I help you?');
+        function openAIUI() {
+            document.getElementById('ai-modal').style.display = 'flex';
+        }
+
+        function closeAIUI() {
+            document.getElementById('ai-modal').style.display = 'none';
         }
     </script>
 </body>
+
 </html>
