@@ -172,6 +172,23 @@
         .ai-interaction p {
             font-size: 1.1rem;
         }
+
+        /* Button Styling */
+        .ai-button {
+            padding: 10px 20px;
+            background-color: #00b4d8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .ai-button:hover {
+            background-color: #0077b6;
+        }
+
     </style>
 </head>
 
@@ -217,8 +234,6 @@
     <div class="ai-icon" onclick="openAIUI()">
         <img src="ai-icon.png" alt="AI Icon">
     </div>
-    <div id="loading" style="display:none;">Loading...</div>
-
 
     <!-- AI Modal -->
     <div id="ai-modal" class="modal">
@@ -228,36 +243,22 @@
             <div class="ai-interaction">
                 <p>Welcome to the AI Assistant! How can I assist you with your aquaculture monitoring today?</p>
                 <p>Click below to get predictions or explore other features.</p>
+                <button class="ai-button" onclick="getPrediction()">Get Prediction</button>
             </div>
         </div>
     </div>
 
     <script>
-        function getPrediction() {
-    // Show loading
-    document.getElementById('loading').style.display = 'block';
-
-    // Example data (simulating delay)
-    setTimeout(function() {
-        let ph = document.getElementById('ph').value;
-        let temperature = document.getElementById('temperature').value;
-        let turbidity = document.getElementById('turbidity').value;
-        let waterLevel = document.getElementById('water-level').value;
-
-        let prediction = "The system seems stable with the current conditions.";
-
-        // Hide loading and display result
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('prediction-result').innerHTML = `<h3>Prediction Result:</h3><p>${prediction}</p>`;
-    }, 2000); // Simulate delay for prediction
-}
-
         function openAIUI() {
             document.getElementById('ai-modal').style.display = 'flex';
         }
 
         function closeAIUI() {
             document.getElementById('ai-modal').style.display = 'none';
+        }
+
+        function getPrediction() {
+            alert("Prediction feature is under development.");
         }
     </script>
 </body>
