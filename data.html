@@ -202,6 +202,20 @@
             </table>
         </div>
     </div>
+    <!-- Download Button -->
+<div style="margin-top: 20px;">
+    <button onclick="downloadCSV()" style="
+        padding: 10px 20px;
+        font-size: 1rem;
+        background-color: #00b4d8;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s;
+    ">Download Data as CSV</button>
+</div>
+
 
     <!-- Footer -->
     <footer>
@@ -210,6 +224,26 @@
 
     <!-- JavaScript to Handle Data Storage -->
     <script>
+        function downloadCSV() {
+    if (data.length === 0) {
+        alert("No data available to download.");
+        return;
+    }
+
+    let csv = "Timestamp,pH Level,Temperature,Turbidity,Water Flow Rate,Water Level (%)\n";
+    data.forEach(entry => {
+        csv += `${entry.time},${entry.ph.toFixed(2)},${entry.temp.toFixed(1)},${entry.turbidity.toFixed(1)},${entry.flow.toFixed(1)},${entry.waterLevel.toFixed(1)}\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "aquaculture_data.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
         let data = [];
 
         // Load Data from localStorage
@@ -305,6 +339,7 @@
         // Load stored data and populate table initially
         loadStoredData();
     </script>
+    
 </body>
 
 </html>
