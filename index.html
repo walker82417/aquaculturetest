@@ -18,7 +18,6 @@
             overflow-x: hidden;
         }
 
-        /* Video Background */
         .video-container {
             position: fixed;
             top: 0;
@@ -70,7 +69,6 @@
             background-color: #00b4d8;
         }
 
-        /* Main Content */
         .content {
             position: absolute;
             top: 40%;
@@ -90,7 +88,6 @@
             margin-bottom: 20px;
         }
 
-        /* Footer */
         footer {
             position: absolute;
             bottom: 10px;
@@ -100,7 +97,6 @@
             font-size: 1rem;
         }
 
-        /* AI Icon */
         .ai-icon {
             position: fixed;
             top: 20px;
@@ -119,7 +115,6 @@
             transform: scale(1.1);
         }
 
-        /* Modal Styling */
         .modal {
             display: none;
             position: fixed;
@@ -160,7 +155,6 @@
             background-color: darkred;
         }
 
-        /* AI Interaction Styling */
         .ai-interaction {
             margin-top: 20px;
         }
@@ -173,7 +167,6 @@
             font-size: 1.1rem;
         }
 
-        /* Button Styling */
         .ai-button {
             padding: 10px 20px;
             background-color: #00b4d8;
@@ -189,11 +182,19 @@
             background-color: #0077b6;
         }
 
+        #loading {
+            display: none;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        #prediction-result {
+            margin-top: 20px;
+        }
     </style>
 </head>
 
 <body>
-    <!-- Background Video -->
     <div class="video-container">
         <video autoplay muted loop id="ocean-video">
             <source src="fish.mp4" type="video/mp4">
@@ -201,116 +202,104 @@
         </video>
     </div>
 
-    <!-- Updated Navbar with Glider -->
     <div class="navbar">
         <ul class="nav-list">
-            <li>
-                <a href="index.html" class="nav-link">Home</a>
-            </li>
-            <li>
-                <a href="control-device.html" class="nav-link">Control Device</a>
-            </li>
-            <li>
-                <a href="data.html" class="nav-link">Data</a>
-            </li>
-            <li>
-                <a href="team.html" class="nav-link">Team</a>
-            </li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="control-device.html">Control Device</a></li>
+            <li><a href="data.html">Data</a></li>
+            <li><a href="team.html">Team</a></li>
         </ul>
     </div>
 
-    <!-- Main Content -->
     <div class="content">
         <h1>Aquaculture Monitoring System</h1>
         <p>Real-time monitoring and analysis of water quality parameters to ensure safe and sustainable aquaculture.</p>
     </div>
 
-    <!-- Footer -->
     <footer>
         <p>WALKER82417</p>
     </footer>
 
-    <!-- AI Icon -->
     <div class="ai-icon" onclick="openAIUI()">
         <img src="ai-icon.png" alt="AI Icon">
     </div>
 
-    <!-- AI Modal -->
     <div id="ai-modal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeAIUI()">X</button>
             <h2>AI Interaction</h2>
             <div class="ai-interaction">
-                <p>Welcome to the AI Assistant! How can I assist you with your aquaculture monitoring today?</p>
-                <p>Click below to get predictions or explore other features.</p>
-                <button class="ai-button" onclick="getPrediction()">Get Prediction</button>
+                <p>Welcome to the AI Assistant! The system is continuously monitoring sensor data and will provide predictions based on the current environment.</p>
+                <div id="loading">Generating prediction...</div>
+                <div id="prediction-result"></div>
             </div>
-            <!-- AI Modal -->
-<div id="ai-modal" class="modal">
-    <div class="modal-content">
-        <button class="close-btn" onclick="closeAIUI()">X</button>
-        <h2>AI Interaction</h2>
-        <div class="ai-interaction">
-            <p>Welcome to the AI Assistant! How can I assist you with your aquaculture monitoring today?</p>
-            <p>Enter the current sensor values below to get a prediction:</p>
-            
-            <!-- Sensor Inputs -->
-            <label for="ph">pH Value:</label>
-            <input type="number" id="ph" placeholder="Enter pH value"><br><br>
-
-            <label for="temperature">Temperature (°C):</label>
-            <input type="number" id="temperature" placeholder="Enter temperature"><br><br>
-
-            <label for="turbidity">Turbidity (NTU):</label>
-            <input type="number" id="turbidity" placeholder="Enter turbidity"><br><br>
-
-            <label for="water-level">Water Level (m):</label>
-            <input type="number" id="water-level" placeholder="Enter water level"><br><br>
-
-            <button class="ai-button" onclick="getPrediction()">Get Prediction</button>
         </div>
     </div>
-    <!-- Prediction Result -->
-<div id="prediction-result"></div>
-
-</div>
-
-        </div>
-    </div>
-
 
     <script>
-        function getPrediction() {
-    // Get the sensor data values from the input fields
-    let ph = document.getElementById('ph').value;
-    let temperature = document.getElementById('temperature').value;
-    let turbidity = document.getElementById('turbidity').value;
-    let waterLevel = document.getElementById('water-level').value;
-
-    // Show loading while prediction is being made
-    document.getElementById('loading').style.display = 'block';
-
-    // Simulating a delay for the AI prediction
-    setTimeout(function() {
-        // Example prediction logic
-        let prediction = "The system is stable with the current values of pH: " + ph + ", Temperature: " + temperature + "°C, Turbidity: " + turbidity + " NTU, and Water Level: " + waterLevel + " meters.";
-
-        // Hide the loading and display the prediction
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('prediction-result').innerHTML = `<h3>Prediction Result:</h3><p>${prediction}</p>`;
-    }, 2000); // Simulate delay for prediction
-}
-
         function openAIUI() {
             document.getElementById('ai-modal').style.display = 'flex';
+            fetchRealTimeData();
         }
 
         function closeAIUI() {
             document.getElementById('ai-modal').style.display = 'none';
         }
 
-        function getPrediction() {
-            alert("Prediction feature is under development.");
+        function fetchRealTimeData() {
+            let ph = getRandomSensorValue(6, 9);
+            let temperature = getRandomSensorValue(15, 35);
+            let turbidity = getRandomSensorValue(0, 100);
+            let waterLevel = getRandomSensorValue(0, 100);
+
+            document.getElementById('loading').style.display = 'block';
+
+            setTimeout(function () {
+                let action = predictAction(waterLevel, ph, temperature, turbidity);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('prediction-result').innerHTML = `<h3>Prediction Result:</h3><p>${action}</p>`;
+            }, 2000);
+        }
+
+        function getRandomSensorValue(min, max) {
+            return parseFloat((Math.random() * (max - min) + min).toFixed(2));
+        }
+
+        function predictAction(waterLevel, ph, temperature, turbidity) {
+            let issues = [];
+
+            if (waterLevel <= 10) {
+                issues.push("Water level is too low. Cannot drain water.");
+            }
+
+            if (waterLevel >= 95) {
+                issues.push("Water level is too high. Cannot refill water.");
+            }
+
+            if (ph < 6.5 || ph > 8.5) {
+                issues.push("Abnormal pH level detected.");
+            }
+
+            if (temperature < 20 || temperature > 30) {
+                issues.push("Abnormal temperature detected.");
+            }
+
+            if (turbidity > 50) {
+                issues.push("Turbidity is high.");
+            }
+
+            if (issues.length === 0) {
+                return "All parameters are within safe limits. No action needed.";
+            } else {
+                if ((ph < 6.5 || ph > 8.5 || temperature < 20 || temperature > 30 || turbidity > 50)) {
+                    if (waterLevel > 10 && waterLevel < 95) {
+                        return "Issues detected: " + issues.join("<br>") + "<br>Action: Initiating water refill/drain as required.";
+                    } else {
+                        return "Issues detected: " + issues.join("<br>") + "<br>Action cannot be performed due to critical water level.";
+                    }
+                }
+                return "System condition requires monitoring: " + issues.join("<br>");
+            }
         }
     </script>
 </body>
