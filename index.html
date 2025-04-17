@@ -245,10 +245,62 @@
                 <p>Click below to get predictions or explore other features.</p>
                 <button class="ai-button" onclick="getPrediction()">Get Prediction</button>
             </div>
+            <!-- AI Modal -->
+<div id="ai-modal" class="modal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeAIUI()">X</button>
+        <h2>AI Interaction</h2>
+        <div class="ai-interaction">
+            <p>Welcome to the AI Assistant! How can I assist you with your aquaculture monitoring today?</p>
+            <p>Enter the current sensor values below to get a prediction:</p>
+            
+            <!-- Sensor Inputs -->
+            <label for="ph">pH Value:</label>
+            <input type="number" id="ph" placeholder="Enter pH value"><br><br>
+
+            <label for="temperature">Temperature (°C):</label>
+            <input type="number" id="temperature" placeholder="Enter temperature"><br><br>
+
+            <label for="turbidity">Turbidity (NTU):</label>
+            <input type="number" id="turbidity" placeholder="Enter turbidity"><br><br>
+
+            <label for="water-level">Water Level (m):</label>
+            <input type="number" id="water-level" placeholder="Enter water level"><br><br>
+
+            <button class="ai-button" onclick="getPrediction()">Get Prediction</button>
+        </div>
+    </div>
+    <!-- Prediction Result -->
+<div id="prediction-result"></div>
+
+</div>
+
         </div>
     </div>
 
+
     <script>
+        function getPrediction() {
+    // Get the sensor data values from the input fields
+    let ph = document.getElementById('ph').value;
+    let temperature = document.getElementById('temperature').value;
+    let turbidity = document.getElementById('turbidity').value;
+    let waterLevel = document.getElementById('water-level').value;
+
+    // Show loading while prediction is being made
+    document.getElementById('loading').style.display = 'block';
+
+    // Simulating a delay for the AI prediction
+    setTimeout(function() {
+        // Example prediction logic
+        let prediction = "The system is stable with the current values of pH: " + ph + ", Temperature: " + temperature + "°C, Turbidity: " + turbidity + " NTU, and Water Level: " + waterLevel + " meters.";
+
+        // Hide the loading and display the prediction
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('prediction-result').innerHTML = `<h3>Prediction Result:</h3><p>${prediction}</p>`;
+    }, 2000); // Simulate delay for prediction
+}
+
         function openAIUI() {
             document.getElementById('ai-modal').style.display = 'flex';
         }
