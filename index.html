@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aquaculture Monitoring System</title>
     <style>
+        /* General Styles */
         * {
             margin: 0;
             padding: 0;
@@ -49,6 +51,10 @@
             list-style-type: none;
             display: flex;
             gap: 20px;
+        }
+
+        .navbar li {
+            display: inline;
         }
 
         .navbar a {
@@ -98,31 +104,16 @@
             right: 20px;
             cursor: pointer;
             z-index: 20;
-            animation: zoomInOut 2s infinite;
         }
 
         .ai-icon img {
-            width: 50px;
-            height: 50px;
+            width: 80px;
+            height: 80px;
             transition: transform 0.3s ease-in-out;
         }
 
         .ai-icon:hover img {
             transform: scale(1.1);
-        }
-
-        @keyframes zoomInOut {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.3);
-            }
-
-            100% {
-                transform: scale(1);
-            }
         }
 
         .modal {
@@ -177,6 +168,21 @@
             font-size: 1.1rem;
         }
 
+        .ai-button {
+            padding: 10px 20px;
+            background-color: #00b4d8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .ai-button:hover {
+            background-color: #0077b6;
+        }
+
         #loading {
             display: none;
             color: white;
@@ -198,7 +204,7 @@
     </div>
 
     <div class="navbar">
-        <ul>
+        <ul class="nav-list">
             <li><a href="index.html">Home</a></li>
             <li><a href="control-device.html">Control Device</a></li>
             <li><a href="data.html">Data</a></li>
@@ -239,62 +245,61 @@
 
         function closeAIUI() {
             document.getElementById('ai-modal').style.display = 'none';
-            document.querySelector('.ai-icon').style.animation = 'none'; // Stop the animation once the modal is closed
         }
 
-        async function fetchRealTimeData() {
-            // Stop zoom animation when fetching starts
-            document.querySelector('.ai-icon').style.animation = 'none';
+        function fetchRealTimeData() {
+            let ph = getRandomSensorValue(6.5, 8);
+            let temperature = getRandomSensorValue(25, 30);
+            let turbidity = getRandomSensorValue(25,45);
+            let waterLevel = getRandomSensorValue(10,80);
 
             document.getElementById('loading').style.display = 'block';
 
-            try {
-                const response = await fetch('https://api.thingspeak.com/channels/2925198/feeds/last.json?api_key=FQQN6FJELDX5YVRM');
-                const data = await response.json();
-
-                const ph = parseFloat(data.field1);
-                const temperature = parseFloat(data.field2);
-                const waterFlow = parseFloat(data.field3);
-                const waterLevel = parseFloat(data.field4);
-                const turbidity = parseFloat(data.field5);
-
-                const action = predictAction(waterLevel, ph, temperature, turbidity);
-
+            setTimeout(function () {
+                let action = predictAction(waterLevel, ph, temperature, turbidity);
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('prediction-result').innerHTML = `<h3>Prediction Result:</h3><p>${action}</p>`;
+            }, 2000);
+        }
 
-                // Re-enable animation after the result
-                setTimeout(() => {
-                    document.querySelector('.ai-icon').style.animation = 'zoomInOut 2s infinite';
-                }, 500); // Delay before starting the animation again
-
-            } catch (error) {
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('prediction-result').innerHTML = `<p style="color: red;">Failed to fetch real-time data. Please try again later.</p>`;
-                console.error("Error fetching data:", error);
-            }
+        function getRandomSensorValue(min, max) {
+            return parseFloat((Math.random() * (max - min) + min).toFixed(2));
         }
 
         function predictAction(waterLevel, ph, temperature, turbidity) {
             let issues = [];
 
-            if (waterLevel <= 10) issues.push("Water level is too low. Cannot drain water.");
-            if (waterLevel >= 95) issues.push("Water level is too high. Cannot refill water.");
-            if (ph < 6.5 || ph > 8.5) issues.push("Abnormal pH level detected.");
-            if (temperature < 20 || temperature > 30) issues.push("Abnormal temperature detected.");
-            if (turbidity > 50) issues.push("Turbidity is high.");
+            if (waterLevel <= 10) {
+                issues.push("Water level is too low. Cannot drain water.");
+            }
+
+            if (waterLevel >= 95) {
+                issues.push("Water level is too high. Cannot refill water.");
+            }
+
+            if (ph < 6.5 || ph > 8.5) {
+                issues.push("Abnormal pH level detected.");
+            }
+
+            if (temperature < 20 || temperature > 30) {
+                issues.push("Abnormal temperature detected.");
+            }
+
+            if (turbidity > 50) {
+                issues.push("Turbidity is high.");
+            }
 
             if (issues.length === 0) {
-                return "✅ All parameters are within safe limits. No action needed.";
+                return "All parameters are within safe limits. No action needed.";
             } else {
                 if ((ph < 6.5 || ph > 8.5 || temperature < 20 || temperature > 30 || turbidity > 50)) {
                     if (waterLevel > 10 && waterLevel < 95) {
-                        return `⚠️ Issues detected:<br>${issues.join("<br>")}<br><br>💡 Action: Initiating water refill/drain as required.`;
+                        return "Issues detected: " + issues.join("<br>") + "<br>Action: Initiating water refill/drain as required.";
                     } else {
-                        return `⚠️ Issues detected:<br>${issues.join("<br>")}<br><br>🚫 Action cannot be performed due to critical water level.`;
+                        return "Issues detected: " + issues.join("<br>") + "<br>Action cannot be performed due to critical water level.";
                     }
                 }
-                return `⚠️ System condition requires monitoring:<br>${issues.join("<br>")}`;
+                return "System condition requires monitoring: " + issues.join("<br>");
             }
         }
     </script>
